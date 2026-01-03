@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signIn = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const res = await api.post(`/api/auth/login`, { email, password });
+      const res = await api.post(`/auth/login`, { email, password });
       const data = res.data;
       if (data.jwt) {
         localStorage.setItem("jwt", data.jwt);
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signUp = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     try {
-      const res = await api.post(`/api/auth/register`, { name, email, password });
+      const res = await api.post(`/auth/register`, { name, email, password });
       const data = res.data;
       if (data.jwt) {
         localStorage.setItem("jwt", data.jwt);

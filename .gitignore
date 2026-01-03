@@ -12,6 +12,10 @@ build/
 bin/
 node_modules/
 
+# Test outputs (screenshots/videos are large)
+test-screenshots/
+test-recordings/
+
 # IDE Configurations
 .idea/
 .vscode/
