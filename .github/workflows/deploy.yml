@@ -71,7 +71,7 @@ jobs:
         working-directory: ./backend
         run: |
           chmod +x mvnw
-          ./mvnw -DskipTests package
+          ./mvnw -DskipTests package || mvn -DskipTests package
 
       - name: 📤 Upload backend artifact
         uses: actions/upload-artifact@v4
