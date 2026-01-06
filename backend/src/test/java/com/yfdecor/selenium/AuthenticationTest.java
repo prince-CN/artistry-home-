@@ -19,7 +19,7 @@ public class AuthenticationTest extends BaseSeleniumTest {
         
         // Check page title or header
         WebElement header = wait.until(ExpectedConditions.visibilityOfElementLocated(
-            By.xpath("//*[contains(text(), 'YF DECOR') or contains(text(), 'LOGIN')]")
+            By.xpath("//*[contains(text(), 'ARTISTRY') or contains(text(), 'LOGIN')]")
         ));
         assertNotNull(header, "Login page should display header");
         

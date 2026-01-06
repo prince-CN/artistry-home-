@@ -95,8 +95,8 @@ const Shop = () => {
         <Helmet>
           <title>
             {currentCategory?.name
-              ? `${currentCategory.name} | YF Decor`
-              : category ? `${category.replace(/-/g, ' ').toUpperCase()} | YF Decor` : 'Shop | YF Decor'}
+              ? `${currentCategory.name} | Artistry Home`
+              : category ? `${category.replace(/-/g, ' ').toUpperCase()} | Artistry Home` : 'Shop | Artistry Home'}
           </title>
         </Helmet>
 

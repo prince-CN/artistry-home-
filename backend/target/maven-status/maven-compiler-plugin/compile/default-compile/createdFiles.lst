@@ -26,6 +26,7 @@ com\yfdecor\repository\OrderRepository.class
 com\yfdecor\service\WishlistService.class
 com\yfdecor\config\AppConfig.class
 com\yfdecor\model\CartItem$CartItemBuilder.class
+com\yfdecor\config\JwtTokenValidator.class
 com\yfdecor\config\CorsConfig.class
 com\yfdecor\DecorApplication.class
 com\yfdecor\repository\AddressRepository.class
@@ -35,15 +36,18 @@ com\yfdecor\dto\response\AdminCartItemResponse$AdminCartItemResponseBuilder.clas
 com\yfdecor\model\Address$AddressBuilder.class
 com\yfdecor\model\CartItem.class
 com\yfdecor\model\Order.class
+com\yfdecor\service\CustomUserDetailsService.class
 com\yfdecor\repository\CartItemRepository.class
 com\yfdecor\dto\response\OrderResponse$OrderResponseBuilder.class
 com\yfdecor\dto\response\ProductResponse$ProductResponseBuilder.class
 com\yfdecor\controller\AddressController.class
 com\yfdecor\dto\response\OrderItemResponse$OrderItemResponseBuilder.class
 com\yfdecor\config\SecurityConfig.class
+com\yfdecor\config\JwtProvider.class
 com\yfdecor\dto\response\AdminCartItemResponse.class
 com\yfdecor\dto\response\OrderItemResponse.class
 com\yfdecor\controller\OrderController.class
+com\yfdecor\config\JwtConstant.class
 com\yfdecor\dto\response\ProfileResponse.class
 com\yfdecor\repository\UserRepository.class
 com\yfdecor\controller\CartController.class

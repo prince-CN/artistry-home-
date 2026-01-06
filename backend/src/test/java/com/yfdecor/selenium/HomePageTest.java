@@ -22,7 +22,7 @@ public class HomePageTest extends BaseSeleniumTest {
         
         // Check for header/logo
         WebElement logo = wait.until(ExpectedConditions.visibilityOfElementLocated(
-            By.xpath("//*[contains(text(), 'yfdecor') or contains(text(), 'YF DECOR') or contains(@class, 'logo')]")
+            By.xpath("//*[contains(text(), 'Artistry') or contains(text(), 'ARTISTRY') or contains(@class, 'logo')]")
         ));
         assertNotNull(logo, "Logo should be visible");
         

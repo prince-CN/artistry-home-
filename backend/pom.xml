@@ -9,8 +9,8 @@
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>yfdecor-backend</name>
-	<description>Spring Boot 3 backend for yfdecor</description>
+	<name>artistryhome-backend</name>
+	<description>Spring Boot 3 backend for Artistry Home</description>
 
 	<properties>
 		<java.version>21</java.version>

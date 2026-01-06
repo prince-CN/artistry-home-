@@ -29,8 +29,8 @@ const Header = () => {
         <div className="container flex items-center justify-center gap-2">
           <Phone className="h-4 w-4 text-primary" />
           <span className="text-muted-foreground">SALES SUPPORT:</span>
-          <a href="tel:+919876543210" className="text-primary font-medium hover:text-gold-light transition-colors">
-            +91 98765 43210
+          <a href="tel:+919009536046" className="text-primary font-medium hover:text-gold-light transition-colors">
+            +91 90095 36046
           </a>
         </div>
       </div>
@@ -42,10 +42,10 @@ const Header = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-1">
               <span className="text-2xl font-display font-bold tracking-tight">
-                <span className="text-primary">yf</span>
-                <span className="text-foreground">decor</span>
+                <span className="text-primary">Artistry</span>
+                <span className="text-foreground">Home</span>
               </span>
-              <span className="text-xs text-muted-foreground">.com</span>
+              <span className="text-xs text-muted-foreground">.in</span>
             </Link>
 
             {/* Desktop Navigation */}

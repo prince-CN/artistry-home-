@@ -12,10 +12,10 @@ const Index = () => {
   return (
     <Layout>
       <Helmet>
-        <title>YF Decor - Premium Home Decor | Canvas Paintings, Crystal Art, Wallpapers</title>
+        <title>Artistry Home - Premium Home Decor | Canvas Paintings, Crystal Art, Wallpapers</title>
         <meta
           name="description"
-          content="Shop premium home decor at YF Decor. Discover beautiful canvas paintings, crystal glass art, moving gear clocks, and designer wallpapers."
+          content="Shop premium home decor at Artistry Home. Discover beautiful canvas paintings, crystal glass art, moving gear clocks, and designer wallpapers."
         />
       </Helmet>
 

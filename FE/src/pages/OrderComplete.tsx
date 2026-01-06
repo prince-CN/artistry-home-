@@ -13,7 +13,7 @@ const OrderComplete = () => {
     return (
         <Layout>
             <Helmet>
-                <title>Order Complete | YF Decor</title>
+                <title>Order Complete | Artistry Home</title>
             </Helmet>
 
             <CheckoutStepper activeStep={3} />
@@ -34,7 +34,7 @@ const OrderComplete = () => {
                         </h1>
                         <p className="text-muted-foreground text-lg mb-10 max-w-xl mx-auto">
                             {order
-                                ? "Thank you for choosing YF Decor. Your luxury pieces are being prepared for delivery."
+                                ? "Thank you for choosing Artistry Home. Your luxury pieces are being prepared for delivery."
                                 : "It seems you haven't placed an order recently or your session has expired."}
                         </p>
 

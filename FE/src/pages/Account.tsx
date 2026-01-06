@@ -157,7 +157,7 @@ const Account = () => {
   return (
     <Layout>
       <Helmet>
-        <title>My Account | YF Decor</title>
+        <title>My Account | Artistry Home</title>
       </Helmet>
 
       <div className="container py-8 max-w-7xl animate-in fade-in duration-500">

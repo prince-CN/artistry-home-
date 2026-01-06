@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
             </h3>
 
             <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-              YF Decor is your premium destination for beautiful home decor items including
+              Artistry Home is your premium destination for beautiful home decor items including
               canvas paintings, crystal glass art, premium wallpapers, and unique wall clocks.
             </p>
 
@@ -86,20 +86,20 @@ const Footer: React.FC = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex gap-3">
                 <MapPin size={18} className="text-primary" />
-                <span className="text-muted-foreground">Mumbai, India</span>
+                <span className="text-muted-foreground">Cloud Nexus, E-5 Arera Colony, Bhopal, MP - 462016</span>
               </li>
 
               <li className="flex gap-3">
                 <Phone size={18} className="text-primary" />
-                <a href="tel:+919876543210" className="hover:text-primary">
-                  +91 98765 43210
+                <a href="tel:+919009536046" className="hover:text-primary">
+                  +91 90095 36046
                 </a>
               </li>
 
               <li className="flex gap-3">
                 <Mail size={18} className="text-primary" />
-                <a href="mailto:info@yfdecor.com" className="hover:text-primary">
-                  info@yfdecor.com
+                <a href="mailto:hello@artistryhome.in" className="hover:text-primary">
+                  hello@artistryhome.in
                 </a>
               </li>
             </ul>
@@ -112,7 +112,7 @@ const Footer: React.FC = () => {
       <div className="border-t border-border py-6">
         <div className="container flex flex-col md:flex-row justify-between items-center gap-2">
           <p className="text-sm text-muted-foreground">
-            © 2025 <span className="text-primary font-semibold">YF Decor</span>
+            © 2026 <span className="text-primary font-semibold">Artistry Home</span>
           </p>
 
           <div className="flex gap-4 text-sm">

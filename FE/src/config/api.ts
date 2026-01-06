@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Use the same hostname as the current page, but with backend port
-const API_HOST = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
-export const API_BASE_URL = `http://${API_HOST}:8081/api`;
+// Use the same hostname as the current page for API calls through nginx proxy
+const API_HOST = typeof window !== 'undefined' ? window.location.origin : 'http://localhost';
+export const API_BASE_URL = `${API_HOST}/api`;
 
 const api = axios.create({
   baseURL: API_BASE_URL,

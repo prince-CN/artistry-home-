@@ -5,7 +5,7 @@ import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
 /**
- * Selenium Test Suite for YF Decor E-commerce Application
+ * Selenium Test Suite for Artistry Home E-commerce Application
  * 
  * This suite runs all Selenium WebDriver tests for the application.
  * 
@@ -27,7 +27,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
  * mvn test -Dtest=UserAccountTest
  */
 @Suite
-@SuiteDisplayName("YF Decor Selenium Test Suite")
+@SuiteDisplayName("Artistry Home Selenium Test Suite")
 @SelectClasses({
     HomePageTest.class,
     AuthenticationTest.class,

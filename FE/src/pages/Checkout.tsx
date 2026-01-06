@@ -103,7 +103,7 @@ const Checkout = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Checkout | YF Decor</title>
+        <title>Checkout | Artistry Home</title>
       </Helmet>
 
       <CheckoutStepper activeStep={2} />

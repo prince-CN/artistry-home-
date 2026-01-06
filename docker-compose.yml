@@ -6,7 +6,7 @@ services:
     container_name: canvas-mysql
     restart: always
     environment:
-      MYSQL_DATABASE: yfdecor
+      MYSQL_DATABASE: artistryhome
       MYSQL_USER: yfuser
       MYSQL_PASSWORD: yfpass
       MYSQL_ROOT_PASSWORD: rootpass
@@ -23,7 +23,7 @@ services:
     depends_on:
       - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/yfdecor
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/artistryhome
       SPRING_DATASOURCE_USERNAME: yfuser
       SPRING_DATASOURCE_PASSWORD: yfpass
     ports:

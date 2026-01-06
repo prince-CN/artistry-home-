@@ -16,8 +16,8 @@ const Cart = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Shopping Cart | YF Decor</title>
-        <meta name="description" content="Review your shopping cart and proceed to checkout at YF Decor." />
+        <title>Shopping Cart | Artistry Home</title>
+        <meta name="description" content="Review your shopping cart and proceed to checkout at Artistry Home." />
       </Helmet>
 
       {/* Cart Steps */}

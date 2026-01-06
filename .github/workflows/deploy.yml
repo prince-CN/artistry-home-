@@ -1,0 +1,171 @@
+# 🚀 Artistry Home - CI/CD Pipeline
+# Automatically builds and deploys to EC2 on push to main branch
+
+name: Build & Deploy to EC2
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch: # Manual trigger
+
+env:
+  EC2_HOST: ${{ secrets.EC2_HOST }}
+  EC2_USER: ubuntu
+  DEPLOY_PATH: /home/ubuntu/deploy
+
+jobs:
+  # ============================================
+  # JOB 1: Build Frontend
+  # ============================================
+  build-frontend:
+    name: 🎨 Build Frontend
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: FE/package-lock.json
+
+      - name: 📚 Install dependencies
+        working-directory: ./FE
+        run: npm ci
+
+      - name: 🔨 Build frontend
+        working-directory: ./FE
+        run: npm run build
+
+      - name: 📤 Upload frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: FE/dist/
+          retention-days: 1
+
+  # ============================================
+  # JOB 2: Build Backend
+  # ============================================
+  build-backend:
+    name: ☕ Build Backend
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 🔨 Build backend
+        working-directory: ./backend
+        run: ./mvnw -DskipTests package
+
+      - name: 📤 Upload backend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jar
+          path: backend/target/*.jar
+          retention-days: 1
+
+  # ============================================
+  # JOB 3: Deploy to EC2
+  # ============================================
+  deploy:
+    name: 🚀 Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: [build-frontend, build-backend]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: 📥 Download frontend artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: ./frontend-dist
+
+      - name: 📥 Download backend artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-jar
+          path: ./backend-jar
+
+      - name: 🔑 Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key.pem
+          chmod 600 ~/.ssh/ec2_key.pem
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 📦 Package frontend
+        run: |
+          cd frontend-dist
+          zip -r ../frontend.zip .
+
+      - name: 📤 Upload to EC2
+        run: |
+          # Upload frontend
+          scp -i ~/.ssh/ec2_key.pem frontend.zip ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.DEPLOY_PATH }}/
+          
+          # Upload backend JAR
+          scp -i ~/.ssh/ec2_key.pem backend-jar/*.jar ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.DEPLOY_PATH }}/backend.jar
+
+      - name: 🚀 Deploy on EC2
+        run: |
+          ssh -i ~/.ssh/ec2_key.pem ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+            set -e
+            
+            echo "📂 Deploying Frontend..."
+            cd /home/ubuntu/deploy
+            rm -rf frontend_new
+            unzip -o frontend.zip -d frontend_new
+            sudo rm -rf /usr/share/nginx/html/*
+            sudo cp -r frontend_new/* /usr/share/nginx/html/
+            sudo chown -R www-data:www-data /usr/share/nginx/html/
+            
+            echo "☕ Deploying Backend..."
+            sudo cp /home/ubuntu/deploy/backend.jar /opt/app/backend.jar
+            sudo chown ubuntu:ubuntu /opt/app/backend.jar
+            sudo systemctl restart backend
+            
+            echo "🔄 Restarting Nginx..."
+            sudo systemctl restart nginx
+            
+            echo "✅ Deployment Complete!"
+            
+            # Health check
+            sleep 5
+            curl -s -o /dev/null -w "%{http_code}" http://localhost || echo "Warning: Health check pending"
+          ENDSSH
+
+      - name: 🧹 Cleanup
+        run: rm -rf ~/.ssh/ec2_key.pem
+
+  # ============================================
+  # JOB 4: Notify (Optional)
+  # ============================================
+  notify:
+    name: 📢 Notify
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: always()
+    
+    steps:
+      - name: 📢 Deployment Status
+        run: |
+          if [ "${{ needs.deploy.result }}" == "success" ]; then
+            echo "✅ Deployment successful!"
+            echo "🌐 Website: http://${{ secrets.EC2_HOST }}"
+          else
+            echo "❌ Deployment failed!"
+          fi
