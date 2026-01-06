@@ -102,33 +102,27 @@ jobs:
           name: backend-jar
           path: ./backend-jar
 
-      - name: 🔑 Setup SSH Key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key.pem
-          chmod 600 ~/.ssh/ec2_key.pem
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
-          echo "Host *" >> ~/.ssh/config
-          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-          echo "  UserKnownHostsFile=/dev/null" >> ~/.ssh/config
-          chmod 600 ~/.ssh/config
-
-      - name: 📦 Package frontend
+      - name: � Package frontend
         run: |
           cd frontend-dist
           zip -r ../frontend.zip .
 
-      - name: 📤 Upload to EC2
-        run: |
-          # Upload frontend
-          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/ec2_key.pem frontend.zip ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.DEPLOY_PATH }}/
-          
-          # Upload backend JAR
-          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/ec2_key.pem backend-jar/*.jar ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.DEPLOY_PATH }}/backend.jar
+      - name: 📤 Upload files to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ env.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "frontend.zip,backend-jar/*.jar"
+          target: ${{ env.DEPLOY_PATH }}
 
       - name: 🚀 Deploy on EC2
-        run: |
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/ec2_key.pem ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ env.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
             set -e
             
             echo "📂 Deploying Frontend..."
@@ -140,7 +134,7 @@ jobs:
             sudo chown -R www-data:www-data /usr/share/nginx/html/
             
             echo "☕ Deploying Backend..."
-            sudo cp /home/ubuntu/deploy/backend.jar /opt/app/backend.jar
+            sudo cp /home/ubuntu/deploy/backend-jar/*.jar /opt/app/backend.jar
             sudo chown ubuntu:ubuntu /opt/app/backend.jar
             sudo systemctl restart backend
             
@@ -149,13 +143,9 @@ jobs:
             
             echo "✅ Deployment Complete!"
             
-            # Health check
-            sleep 5
-            curl -s -o /dev/null -w "%{http_code}" http://localhost || echo "Warning: Health check pending"
-          ENDSSH
-
-      - name: 🧹 Cleanup
-        run: rm -rf ~/.ssh/ec2_key.pem
+            # Clean up
+            rm -f frontend.zip
+            rm -rf backend-jar
 
   # ============================================
   # JOB 4: Notify (Optional)
