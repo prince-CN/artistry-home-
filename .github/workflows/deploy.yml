@@ -107,7 +107,11 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key.pem
           chmod 600 ~/.ssh/ec2_key.pem
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
+          echo "Host *" >> ~/.ssh/config
+          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+          echo "  UserKnownHostsFile=/dev/null" >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
 
       - name: 📦 Package frontend
         run: |
@@ -117,14 +121,14 @@ jobs:
       - name: 📤 Upload to EC2
         run: |
           # Upload frontend
-          scp -i ~/.ssh/ec2_key.pem frontend.zip ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.DEPLOY_PATH }}/
+          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/ec2_key.pem frontend.zip ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.DEPLOY_PATH }}/
           
           # Upload backend JAR
-          scp -i ~/.ssh/ec2_key.pem backend-jar/*.jar ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.DEPLOY_PATH }}/backend.jar
+          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/ec2_key.pem backend-jar/*.jar ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ env.DEPLOY_PATH }}/backend.jar
 
       - name: 🚀 Deploy on EC2
         run: |
-          ssh -i ~/.ssh/ec2_key.pem ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/ec2_key.pem ${{ env.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
             set -e
             
             echo "📂 Deploying Frontend..."
